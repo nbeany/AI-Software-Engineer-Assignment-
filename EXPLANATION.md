@@ -28,5 +28,5 @@ This adds `not isinstance(self.oauth2_token, OAuth2Token)` as an explicit branch
 
 ## One realistic edge case the tests still don't cover
 
-An `OAuth2Token` whose `expires_at` is exactly equal to the current Unix timestamp (i.e. it expires *right now*). The `expired` property uses `>=`, so it is treated as expired and a refresh is triggered — but between the `expired` check and the `refresh_oauth2()` call the clock could tick forward, meaning the refreshed token could theoretically also be evaluated as expired on a very slow system. This race condition is not tested.
+An `OAuth2Token` whose `expires_at` is exactly equal to the current Unix timestamp (i.e. it expires *right now*). The `expired` property uses `>=`, so it is treated as expired and a refresh is triggered — but between the `expired` check and the `refresh_oauth2()` call the clock could tick forward, meaning the refreshed token could also be evaluated as expired on a very slow system. This race condition is not tested.
 
