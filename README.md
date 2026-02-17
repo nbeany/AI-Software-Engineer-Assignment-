@@ -33,6 +33,34 @@ Update this README to include:
 - how to run the tests locally,
 - how to build and run tests with Docker.
 
+## Running Tests
+
+### Run tests locally
+
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Run the test suite:
+   ```bash
+   pytest -v
+   ```
+
+### Build and run tests with Docker
+
+1. Build the Docker image:
+   ```bash
+   docker build -t ai-experts-tests .
+   ```
+
+2. Run the tests inside the container:
+   ```bash
+   docker run --rm ai-experts-tests
+   ```
+
+---
+
 ### 4) Find + fix a bug (required)
 
 There is a bug somewhere in this repository.

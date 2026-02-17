@@ -37,8 +37,21 @@ def test_api_request_refreshes_when_token_is_missing():
 
 
 def test_api_request_refreshes_when_token_is_dict():
+    # BUG REPRO: a non-empty dict is truthy so `not self.oauth2_token` is False,
+    # and `isinstance(..., OAuth2Token)` is also False, so the old condition never
+    # triggered a refresh — leaving no Authorization header at all.
     c = Client()
     c.oauth2_token = {"access_token": "stale", "expires_at": 0}
+
+    resp = c.request("GET", "/me", api=True)
+
+    assert resp["headers"].get("Authorization") == "Bearer fresh-token"
+
+
+def test_api_request_refreshes_when_token_is_expired_dict():
+    # Same bug: dict with a future expiry — still not an OAuth2Token, must refresh.
+    c = Client()
+    c.oauth2_token = {"access_token": "old", "expires_at": int(time.time()) + 9999}
 
     resp = c.request("GET", "/me", api=True)
 
